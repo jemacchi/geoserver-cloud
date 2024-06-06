@@ -47,3 +47,10 @@ push-image:
 	-f docker-build/infrastructure.yml \
 	-f docker-build/geoserver.yml \
 	push
+
+sign-image:
+	TAG==$(TAG) \
+	for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep "geoserver-cloud-"); do \
+          image_name=$(echo $image | awk -F/ '{print $NF}') \
+          cosign sign --key env://COSIGN_PRIVATE_KEY DOCKER_HUB_USERNAME/$image_name \
+        done
