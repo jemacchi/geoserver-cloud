@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   discovery:
-    image: geoservercloud/geoserver-cloud-discovery:${TAG}
+    image: ${DOCKERHUB_REPO}/geoserver-cloud-discovery:${TAG}
     build:
       no_cache: true
       context: ../src/apps/infrastructure/discovery/
@@ -10,7 +10,7 @@ services:
         TAG: ${TAG}
 
   config:
-    image: geoservercloud/geoserver-cloud-config:${TAG}
+    image: ${DOCKERHUB_REPO}/geoserver-cloud-config:${TAG}
     build:
       no_cache: true
       context: ../src/apps/infrastructure/config/
@@ -18,7 +18,7 @@ services:
         TAG: ${TAG}
 
   admin:
-    image: geoservercloud/geoserver-cloud-admin-server:${TAG}
+    image: ${DOCKERHUB_REPO}/geoserver-cloud-admin-server:${TAG}
     build:
       no_cache: true
       context: ../src/apps/infrastructure/admin/
@@ -26,7 +26,7 @@ services:
         TAG: ${TAG}
     
   gateway:
-    image: geoservercloud/geoserver-cloud-gateway:${TAG}
+    image: ${DOCKERHUB_REPO}/geoserver-cloud-gateway:${TAG}
     build:
       no_cache: true
       context: ../src/apps/infrastructure/gateway/

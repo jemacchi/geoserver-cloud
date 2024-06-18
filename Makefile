@@ -1,6 +1,7 @@
 all: install test build-image
 
 TAG=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
+DOCKERHUB_REPO=jemacchi
 
 clean:
 	./mvnw clean
@@ -17,12 +18,12 @@ install:
 test:
 	./mvnw verify -ntp -T4
 
-
 build-base-images:
 	./mvnw clean package -f src/apps/base-images -DksipTests -T4 && \
 	COMPOSE_DOCKER_CLI_BUILD=1 \
 	DOCKER_BUILDKIT=1 \
 	TAG=$(TAG) \
+	DOCKERHUB_REPO=$(DOCKERHUB_REPO) \
 	docker compose -f docker-build/base-images.yml build 
 
 build-image-infrastructure:
@@ -30,6 +31,7 @@ build-image-infrastructure:
 	COMPOSE_DOCKER_CLI_BUILD=1 \
 	DOCKER_BUILDKIT=1 \
 	TAG=$(TAG) \
+	DOCKERHUB_REPO=$(DOCKERHUB_REPO) \
 	docker compose -f docker-build/infrastructure.yml build
 
 build-image-geoserver:
@@ -37,20 +39,15 @@ build-image-geoserver:
 	COMPOSE_DOCKER_CLI_BUILD=1 \
 	DOCKER_BUILDKIT=1 \
 	TAG=$(TAG) \
+	DOCKERHUB_REPO=$(DOCKERHUB_REPO) \
 	docker compose -f docker-build/geoserver.yml build 
   
 build-image: build-base-images build-image-infrastructure build-image-geoserver
 
 push-image:
 	TAG=$(TAG) \
+	DOCKERHUB_REPO=$(DOCKERHUB_REPO) \
 	docker compose \
 	-f docker-build/infrastructure.yml \
 	-f docker-build/geoserver.yml \
 	push
-
-sign-image:
-	TAG==$(TAG) \
-	for image in $(docker images --format "{{.Repository}}:{{.Tag}}" | grep "geoserver-cloud-"); do \
-          image_name=$(echo $image | awk -F/ '{print $NF}') \
-          cosign sign --key env://COSIGN_PRIVATE_KEY DOCKER_HUB_USERNAME/$image_name  \
-        done
