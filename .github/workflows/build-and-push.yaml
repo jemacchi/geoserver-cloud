@@ -59,7 +59,8 @@ jobs:
         sudo mv cosign-linux-amd64 /usr/local/bin/cosign
 
     - name: Set up Cosign key
-        run: echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
+      run: |
+        echo "${{ secrets.COSIGN_PRIVATE_KEY }}" > cosign.key
 
     - name: Sign Docker image
       run: |
