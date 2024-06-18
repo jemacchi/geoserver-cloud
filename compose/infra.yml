@@ -25,7 +25,8 @@ services:
     user: ${GS_USER}
     tmpfs:
       - /var/lib/rabbitmq
-    #volumes:
+    volumes:
+      - $PWD/../config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     #  - rabbitmq_data:/var/lib/rabbitmq
     ports:
       - "5672:5672"
@@ -34,7 +35,7 @@ services:
       resources:
         limits:
           cpus: '4.0'
-          memory: 1G
+          memory: 2G
     restart: unless-stopped
     healthcheck:
       test: rabbitmq-diagnostics is_running

@@ -6,10 +6,12 @@ on:
     branches:
       - main
       - signed-images
+      - "release/**"
     paths:
       - "Makefile"
       - "pom.xml"
       - ".github/workflows/build-and-push.yaml"
+      - "config"
       - "src/**"
     tags:
       - '*'
