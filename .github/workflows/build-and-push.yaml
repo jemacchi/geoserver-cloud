@@ -58,9 +58,9 @@ jobs:
         echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
         chmod 600 ~/.docker/trust/private/sign.key
 
-    #- name: Sign Docker image
-    #  run: |
-    #    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.9-SNAPSHOT
+    - name: Sign Docker image
+      run: |
+        DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.8.3
 
     #- name: Push images
     #  run: |
