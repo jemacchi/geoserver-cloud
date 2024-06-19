@@ -1,7 +1,7 @@
 all: install test build-image
 
 TAG=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`
-DOCKERHUB_REPO=jemacchi
+DOCKERHUB_REPO := $(DOCKER_HUB_USERNAME)
 
 clean:
 	./mvnw clean
@@ -43,11 +43,3 @@ build-image-geoserver:
 	docker compose -f docker-build/geoserver.yml build 
   
 build-image: build-base-images build-image-infrastructure build-image-geoserver
-
-push-image:
-	TAG=$(TAG) \
-	DOCKERHUB_REPO=$(DOCKERHUB_REPO) \
-	docker compose \
-	-f docker-build/infrastructure.yml \
-	-f docker-build/geoserver.yml \
-	push

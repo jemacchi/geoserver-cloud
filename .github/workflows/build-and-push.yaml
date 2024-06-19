@@ -51,22 +51,14 @@ jobs:
     - name: Build images
       run: |
         make build-image
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
-    #- name: Set up private key
-    #  run: |
-    #    mkdir -p ~/.docker/trust/private/
-    #    echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
-    #    chmod 600 ~/.docker/trust/private/sign.key
-
-    #- name: Sign Docker image
-    #  run: |
-    #    echo $DOCKER_HUB_USERNAME
-    #    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.8.3
-
+    # It's not possible to sign and push images using this bot for multiple repositories (alternative, not to use the bot and do it manually, creating some script to do it)
     - name: Sign and push docker WMS image
       uses: sudo-bot/action-docker-sign@latest
       with:
-        image-ref: "docker.io/jemacchi/geoserver-cloud-wms:1.9-SNAPSHOT"
+        image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wms:${{ secrets.RELEASE_TAG }}"
         # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
         private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
         # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
@@ -77,19 +69,13 @@ jobs:
     - name: Sign and push docker WFS image
       uses: sudo-bot/action-docker-sign@latest
       with:
-        image-ref: "docker.io/jemacchi/geoserver-cloud-wfs:1.9-SNAPSHOT"
+        image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wfs:${{ secrets.RELEASE_TAG }}"
         # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
         private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
         # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
         private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
         # Example: myPassw0rdChangeMeReplaceMe
         private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
-
-
-
-    #- name: Push images
-    #  run: |
-    #    make push-image
 
     - name: Remove project jars from cached repository
       run: |
