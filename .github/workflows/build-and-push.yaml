@@ -74,17 +74,6 @@ jobs:
         # Example: myPassw0rdChangeMeReplaceMe
         private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
 
-    - name: Sign and push docker WEBUI image
-      uses: sudo-bot/action-docker-sign@latest
-      with:
-        image-ref: "docker.io/jemacchi/geoserver-cloud-webui:1.9-SNAPSHOT"
-        # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
-        private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
-        # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
-        private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
-        # Example: myPassw0rdChangeMeReplaceMe
-        private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
-
     - name: Sign and push docker WFS image
       uses: sudo-bot/action-docker-sign@latest
       with:
