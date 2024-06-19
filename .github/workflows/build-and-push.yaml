@@ -52,9 +52,9 @@ jobs:
     #  run: |
     #    make build-image
 
-    - name: Set up key
+    - name: Set up private key
       run: |
-        ls ~/.docker
+        mkdir -p ~/.docker/trust/private/
         echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
         chmod 600 ~/.docker/trust/private/sign.key
 
