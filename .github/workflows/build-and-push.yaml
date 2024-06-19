@@ -52,18 +52,27 @@ jobs:
     #  run: |
     #    make build-image
 
-    - name: Set up private key
-      run: |
-        mkdir -p ~/.docker/trust/private/
-        echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
-        chmod 600 ~/.docker/trust/private/sign.key
+    #- name: Set up private key
+    #  run: |
+    #    mkdir -p ~/.docker/trust/private/
+    #    echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
+    #    chmod 600 ~/.docker/trust/private/sign.key
 
-    - name: Sign Docker image
-      run: |
-        echo $DOCKER_HUB_USERNAME
-        DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.8.3
-      env:
-        MY_DOCKER_HUB_USERNAME: 'jemacchi'
+    #- name: Sign Docker image
+    #  run: |
+    #    echo $DOCKER_HUB_USERNAME
+    #    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.8.3
+
+    - name: Sign and push docker image
+      uses: sudo-bot/action-docker-sign@latest
+      with:
+        image-ref: "docker.io/jemacchi/geoserver-cloud-wms:1.9-SNAPSHOT"
+        # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
+        private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
+        # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
+        private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
+        # Example: myPassw0rdChangeMeReplaceMe
+        private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
 
     #- name: Push images
     #  run: |
