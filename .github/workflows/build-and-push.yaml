@@ -63,7 +63,7 @@ jobs:
         echo $DOCKER_HUB_USERNAME
         DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.8.3
       env:
-        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+        DOCKER_HUB_USERNAME: 'jemacchi'
 
     #- name: Push images
     #  run: |
