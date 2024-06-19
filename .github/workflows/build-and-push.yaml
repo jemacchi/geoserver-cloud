@@ -44,25 +44,27 @@ jobs:
     - name: Validate source code formatting
       run: make lint
 
-    - name: Build without tests
-      run: |
-        make install
+    #- name: Build without tests
+    #  run: |
+    #    make install
 
-    - name: Build images
-      run: |
-        make build-image
+    #- name: Build images
+    #  run: |
+    #    make build-image
 
     - name: Set up key
       run: |
-        echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key && chmod 600 ~/.docker/trust/private/sign.key
+        ls ~/.docker/trust/private/
+        echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
+        chmod 600 ~/.docker/trust/private/sign.key
 
-    - name: Sign Docker image
-      run: |
-        DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.9-SNAPSHOT
+    #- name: Sign Docker image
+    #  run: |
+    #    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE="${{ secrets.REPOSITORY_PASSPHRASE }}" docker trust sign ${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-webui:1.9-SNAPSHOT
 
-    - name: Push images
-      run: |
-        make push-image
+    #- name: Push images
+    #  run: |
+    #    make push-image
 
     - name: Remove project jars from cached repository
       run: |
