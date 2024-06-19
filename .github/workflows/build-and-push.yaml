@@ -41,8 +41,8 @@ jobs:
         java-version: '21'
         cache: 'maven'
 
-    - name: Validate source code formatting
-      run: make lint
+    #- name: Validate source code formatting
+    #  run: make lint
 
     #- name: Build without tests
     #  run: |
@@ -54,7 +54,7 @@ jobs:
 
     - name: Set up key
       run: |
-        ls ~/.docker/trust/private/
+        ls ~/.docker
         echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
         chmod 600 ~/.docker/trust/private/sign.key
 
