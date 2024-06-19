@@ -77,6 +77,17 @@ jobs:
         # Example: myPassw0rdChangeMeReplaceMe
         private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
 
+    - name: Sign and push docker WPS image
+      uses: sudo-bot/action-docker-sign@latest
+      with:
+        image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wps:${{ secrets.RELEASE_TAG }}"
+        # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
+        private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
+        # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
+        private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
+        # Example: myPassw0rdChangeMeReplaceMe
+        private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
+
     - name: Remove project jars from cached repository
       run: |
         rm -rf ~/.m2/repository/org/geoserver
