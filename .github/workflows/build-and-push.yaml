@@ -41,16 +41,16 @@ jobs:
         java-version: '21'
         cache: 'maven'
 
-    #- name: Validate source code formatting
-    #  run: make lint
+    - name: Validate source code formatting
+      run: make lint
 
-    #- name: Build without tests
-    #  run: |
-    #    make install
+    - name: Build without tests
+      run: |
+        make install
 
-    #- name: Build images
-    #  run: |
-    #    make build-image
+    - name: Build images
+      run: |
+        make build-image
 
     #- name: Set up private key
     #  run: |
