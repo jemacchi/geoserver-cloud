@@ -57,6 +57,7 @@ jobs:
         mkdir -p ~/.docker/trust/private/
         echo "${{ secrets.SIGN_PRIVATE_KEY }}" > ~/.docker/trust/private/sign.key
         chmod 600 ~/.docker/trust/private/sign.key
+        cat ~/.docker/trust/private/sign.key
 
     - name: Sign Docker image
       run: |
