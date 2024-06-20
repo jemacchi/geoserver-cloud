@@ -67,6 +67,9 @@ jobs:
         env:
           COSIGN_PASSWORD: ""
 
+    - name: Push images
+      run: |
+        make push-image
     # It's not possible to sign and push images using this bot for multiple repositories (alternative, not to use the bot and do it manually, creating some script to do it)
     #- name: Sign and push docker WMS image
     #  uses: sudo-bot/action-docker-sign@latest
