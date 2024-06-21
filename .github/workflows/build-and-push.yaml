@@ -62,7 +62,7 @@ jobs:
 
     - name: Sign WMS container image
       run: |
-        cosign sign --key cosign.key \
+        cosign sign --yes --key cosign.key \
         docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wms:${{ secrets.RELEASE_TAG }}
       env:
         COSIGN_PASSWORD: ""
