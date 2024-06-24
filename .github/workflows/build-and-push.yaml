@@ -60,44 +60,16 @@ jobs:
     - name: Write signing key to disk (only needed for `cosign sign --key`)
       run: echo "${{ secrets.COSIGN_KEY }}" > cosign.key
 
-    - name: Sign WCS container image
+    - name: Push images
+      run: |
+        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
+
+    - name: Sign images
       run: |
         cosign sign --yes --key cosign.key \
         docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
       env:
         COSIGN_PASSWORD: ""
-
-    - name: Push images
-      run: |
-        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
-
-    # It's not possible to sign and push images using this bot for multiple repositories (alternative, not to use the bot and do it manually, creating some script to do it)
-    #- name: Sign and push docker WMS image
-    #  uses: sudo-bot/action-docker-sign@latest
-    #  with:
-    #    image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wms:${{ secrets.RELEASE_TAG }}"
-        # Example: a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a
-    #    private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
-        # The contents from: ~/.docker/trust/private/a5859a33123cedec334e70ec7709ba8a185a65f485b10c485ce9a84fc917720a.key)
-    #    private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
-        # Example: myPassw0rdChangeMeReplaceMe
-    #    private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
-
-    #- name: Sign and push docker WFS image
-    #  uses: sudo-bot/action-docker-sign@latest
-    #  with:
-    #    image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wfs:${{ secrets.RELEASE_TAG }}"
-    #    private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
-    #    private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
-    #    private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
-
-    #- name: Sign and push docker WPS image
-    #  uses: sudo-bot/action-docker-sign@latest
-    #  with:
-    #    image-ref: "docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wps:${{ secrets.RELEASE_TAG }}"
-    #    private-key-id: "${{ secrets.DOCKER_PRIVATE_KEY_ID }}"
-    #    private-key: ${{ secrets.DOCKER_PRIVATE_KEY }}
-    #    private-key-passphrase: ${{ secrets.REPOSITORY_PASSPHRASE }}
 
     - name: Remove project jars from cached repository
       run: |
