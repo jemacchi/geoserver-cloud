@@ -60,16 +60,16 @@ jobs:
     - name: Write signing key to disk (only needed for `cosign sign --key`)
       run: echo "${{ secrets.COSIGN_KEY }}" > cosign.key
 
-    - name: Sign WMS container image
+    - name: Sign WCS container image
       run: |
         cosign sign --yes --key cosign.key \
-        docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wms:${{ secrets.RELEASE_TAG }}
+        docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
       env:
         COSIGN_PASSWORD: ""
 
     - name: Push images
       run: |
-        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wms:${{ secrets.RELEASE_TAG }}
+        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
 
     # It's not possible to sign and push images using this bot for multiple repositories (alternative, not to use the bot and do it manually, creating some script to do it)
     #- name: Sign and push docker WMS image
