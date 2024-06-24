@@ -51,3 +51,6 @@ push-image:
 	-f docker-build/infrastructure.yml \
 	-f docker-build/geoserver.yml \
 	push
+
+sign-image:
+	cosign sign --yes --key cosign.key docker.io/$(DOCKERHUB_REPO)/geoserver-cloud-wcs:$(TAG)

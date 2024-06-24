@@ -62,12 +62,11 @@ jobs:
 
     - name: Push images
       run: |
-        docker push docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
+        make push-image
 
     - name: Sign images
       run: |
-        cosign sign --yes --key cosign.key \
-        docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/geoserver-cloud-wcs:${{ secrets.RELEASE_TAG }}
+        make sign-image
       env:
         COSIGN_PASSWORD: ""
 
