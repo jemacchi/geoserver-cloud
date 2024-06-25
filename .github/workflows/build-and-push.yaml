@@ -63,12 +63,15 @@ jobs:
     - name: Push images
       run: |
         make push-image
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
     - name: Sign images
       run: |
         make sign-image
       env:
         COSIGN_PASSWORD: ""
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
     - name: Remove project jars from cached repository
       run: |
