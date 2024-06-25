@@ -46,6 +46,8 @@ jobs:
     - name: Build images
       run: |
         make build-image
+      env:
+        DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
 
     - name: Remove project jars from cached repository
       run: |
