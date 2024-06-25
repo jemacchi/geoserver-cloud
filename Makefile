@@ -53,7 +53,5 @@ push-image:
 	push
 
 sign-image:
-	@images=$$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "$(DOCKERHUB_REPO)/geoserver-cloud-"); \
-	for image in $$images; do \
-	  cosign sign --yes --key cosign.key $$image; \
-	done
+	@images=$$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "$(DOCKERHUB_REPO)/geoserver-cloud-");
+	for image in $$images; do cosign sign --yes --key cosign.key $$image; done
