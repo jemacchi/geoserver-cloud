@@ -1,6 +1,7 @@
 import json
 
 import pytest
+import xml.etree.ElementTree as ET
 from conftest import GEOSERVER_URL
 from geoservercloud import GeoServerCloud
 
@@ -62,6 +63,24 @@ def test_cascaded_wms(geoserver):
     )
     assert response.status_code == 201
 
+    # Check new layer in WMS GetCapabilities ----
+    response = geoserver.get_request("/ows?service=WMS&version=1.3.0&request=GetCapabilities")
+    assert response.status_code == 200
+
+    # Parse getCapabilities xml
+    xml_text = response.text if hasattr(response, "text") else response.read().decode("utf-8")
+    root = ET.fromstring(xml_text)
+
+    # Look for <Layer><Name>WORKSPACE:WMS_LAYER</Name>
+    target_name = f"{WORKSPACE}:{WMS_LAYER}"
+    found = False
+    for name_el in root.findall(".//{*}Layer/{*}Name"):
+        if (name_el.text or "").strip() == target_name:
+            found = True
+            break
+
+    assert found, f"Layer with name '{target_name}' not found in WMS GetCapabilities"
+
     # Perform GetMap request
     response = geoserver.get_map(
         layers=[WMS_LAYER],
@@ -115,6 +134,24 @@ def test_cascaded_wmts(geoserver):
     # Publish the layer in GWC
     response = geoserver.publish_gwc_layer(WORKSPACE, WMTS_LAYER)
     assert response.status_code == 200
+
+    # Check new layer in WMS GetCapabilities ----
+    response = geoserver.get_request("/ows?service=WMS&version=1.3.0&request=GetCapabilities")
+    assert response.status_code == 200
+
+    # Parse getCapabilities xml
+    xml_text = response.text if hasattr(response, "text") else response.read().decode("utf-8")
+    root = ET.fromstring(xml_text)
+
+    # Look for <Layer><Name>WORKSPACE:WMTS_LAYER</Name>
+    target_name = f"{WORKSPACE}:{WMTS_LAYER}"
+    found = False
+    for name_el in root.findall(".//{*}Layer/{*}Name"):
+        if (name_el.text or "").strip() == target_name:
+            found = True
+            break
+
+    assert found, f"Layer with name '{target_name}' not found in WMS GetCapabilities"
 
     # Perform GetTile request (GWC)
     response = geoserver.get_tile(
