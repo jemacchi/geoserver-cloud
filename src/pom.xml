@@ -679,6 +679,11 @@
         <version>${gs.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.geoserver.community</groupId>
+        <artifactId>gs-portolan</artifactId>
+        <version>${revision}</version>
+      </dependency>
+      <dependency>
         <groupId>io.tileverse.geoserver</groupId>
         <artifactId>tileverse-geoserver-parquetry</artifactId>
         <version>${tileverse-geoserver.version}</version>
@@ -817,6 +822,11 @@
         <groupId>org.mapstruct</groupId>
         <artifactId>mapstruct</artifactId>
         <version>${mapstruct.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.geoserver.cloud.extensions</groupId>
+        <artifactId>gs-cloud-extension-portolan</artifactId>
+        <version>${revision}</version>
       </dependency>
       <dependency>
         <groupId>org.wiremock</groupId>
